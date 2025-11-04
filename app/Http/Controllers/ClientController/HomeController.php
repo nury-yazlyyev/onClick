@@ -63,14 +63,16 @@ class HomeController extends Controller
     {
 
         $product = Product::where('id', $id)->firstOrFail();
-        $vendor = $product->vendor_id;
-        $user = Vendor::where('id', $vendor)->first();
-        $user2 = User::withCount(['followers', 'followings'])->where('id', $user->user_id)->first();
+        $vendor_id = $product->vendor_id;
+        $vendor = Vendor::where('id', $vendor_id)->first();
+        $vendor_user = User::withCount(['followers', 'followings'])->where('id', $vendor->user_id)->first();
+        $user = Auth::user();
 
         return view('client.home.show')->with([
             'product' => $product,
-            'vendor' =>$vendor,
-            'user' => $user2
+            'vendor' =>$vendor_id,
+            'user' => $vendor_user,
+            'client' =>$user
         ]);
     }
 

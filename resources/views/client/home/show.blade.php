@@ -47,7 +47,7 @@
             </div>
         </div>
 
-        {{-- Satıcı bilgisi --}}
+        {{-- Satici bilgisi --}}
         <div class="col-md-3">
             <div class="card border-0 shadow-sm p-3">
                 <div class="mb-2">
@@ -81,7 +81,6 @@
                         <i class="bi bi-shop me-1"></i> {{ __('app.view_store') }}
                     </button>
                 </form>
-
                 {{-- Follow / Unfollow --}}
                 <form action="{{ route('follow', $vendor ?? $product->vendor->id) }}" method="post">
                     @csrf

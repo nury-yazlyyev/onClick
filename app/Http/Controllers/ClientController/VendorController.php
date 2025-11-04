@@ -85,12 +85,12 @@ class VendorController extends Controller
     {
         $categories = Category::get();
         $user = User::withCount(['followers', 'followings'])->where('id', Auth::user()->id)->first();
-        $vendor = Vendor::where('user_id', $user->id)->first();
+        $vendor = Vendor::withCount(['products'])->where('user_id', $user->id)->first();
 
         return view('vendor.dashboard.dashboard')->with([
             'categories' => $categories,
             'user' => $user,
-            'vendor' =>$vendor
+            'vendor' =>$vendor,
         ]);
     }
 
