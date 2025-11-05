@@ -91,6 +91,7 @@ class VendorController extends Controller
             'categories' => $categories,
             'user' => $user,
             'vendor' =>$vendor,
+            'products' =>$vendor->products
         ]);
     }
 

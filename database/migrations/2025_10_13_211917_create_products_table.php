@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('vendor_id');
             $table->foreignId('category_id');
-            $table->string('img_path');
+            $table->string('img_path')->nullable();
             $table->string('name');
             $table->float('price');
             $table->text('description')->nullable();

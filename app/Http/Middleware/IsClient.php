@@ -17,7 +17,7 @@ class IsClient
     public function handle(Request $request, Closure $next): Response
     {
         if (Auth::user()->is_seller) {
-            return redirect()->route('home')->with('error', 'Satyjylar Folow hukugyna eye dal!');
+            return back()->with('error', 'Satyjylar Folow hukugyna eye dal!');
         } else {
             return $next($request);
         }

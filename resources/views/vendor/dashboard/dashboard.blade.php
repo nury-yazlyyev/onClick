@@ -106,14 +106,57 @@
 
             <!-- Sağ Taraf: Haryt Üýtget & Ähli Harytlary Gör -->
             <div class="col-lg-4 d-flex flex-column justify-content-between gap-4">
-                <div class="card shadow-lg border-0 rounded-4 flex-fill">
+                <div class="card shadow-lg border-0 rounded-4 ">
                     <div class="card-header bg-warning text-white py-3 rounded-top-4">
                         <h4 class="mb-0"><i class="bi bi-pencil-square me-2"></i> Haryt Üýtget</h4>
                     </div>
                     <div class="card-body p-4">
-                        Harytlary görkez
+                        <section id="banner" class="splide mt-1 overflow-hidden" aria-label="meals">
+                            <div class="splide__track">
+                                <ul class="splide__list">
+                                    @foreach ($products as $product)
+                                    <li class="splide__slide">
+                                        <div class="card d-flex flex-row align-items-center p-2 shadow-sm border-0 rounded-4">
+                                            {{-- Ürün Görseli --}}
+                                            <div class="me-3" style="width: 100px; height: 100px; flex-shrink: 0;">
+                                                <a href="{{ route('show', $product->id) }}" class="text-decoration-none">
+                                                    <img src="{{ asset('storage/' . $product->img_path) }}" alt="{{ $product->name }}" class="img-fluid rounded-3 w-100 h-100 object-fit-cover">
+                                                </a>
+                                            </div>
+
+                                            {{-- Ürün Bilgileri --}}
+                                            <div class="flex-grow-1">
+                                                <a href="{{ route('show', $product->id) }}" class="text-decoration-none text-dark">
+                                                    <h6 class="fw-bold mb-1 text-truncate" style="max-width: 200px;">{{ $product->name }}</h6>
+                                                </a>
+                                                <p class="mb-1" style="font-size: 13px;">
+                                                    <span class="fw-semibold text-secondary">{{ __('app.category') }}:</span>
+                                                    {{ $product->category->name ?? 'Nabelli' }}
+                                                </p>
+                                                <div class="d-flex align-items-center justify-content-between">
+                                                    <span class="fw-bold" style="font-size: 14px; color: #FF6620;">
+                                                        {{ __('app.price') }}:
+                                                    </span>
+                                                    <span class="fw-bold text-success" style="font-size: 15px;">
+                                                        {{ $product->price }} TMT
+                                                    </span>
+                                                </div>
+                                                <a href="{{ route('show', $product->id) }}" class="btn btn-sm fw-semibold mt-2 text-white" style="background-color: #FF6620;">
+                                                    {{ __('app.edit_product') }} <i class="bi bi-basket ms-1"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </section>
+                        <div class="mt-3">
+                            <a href="#" class="btn btn-outline-warning w-100">View All</a>
+                        </div>
                     </div>
                 </div>
+
 
                 <div class="card shadow-lg border-0 rounded-4 flex-fill">
                     <div class="card-header bg-warning text-white py-3 rounded-top-4">
@@ -127,5 +170,35 @@
         </div>
     </div>
 
+    <script src="{{ asset('js/splide.min.js') }}"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var splide = new Splide('#banner', {
+                type: 'loop',
+                autoplay: 1, // Awtomat ozi gecip duran etmegi [0, 1]
+                arrows: 1,
+                pagination: false, // gapdaldaky strelka  [0, 1]
+                interval: 2000, // nace millisekunt wagtdan gecmelidigi  
+                pauseOnHover: 1, // ustune baranynda pause bolyar  [0, 1]
+                perMove: 1, // nace slide yygylykda gecmeli
+                perPage: 1, // her sahypada nace slide gorkezmeli
+                gap: "1rem",
+                breakpoints: {
+                    640: {
+                        perPage: 1,
+                    },
+                    990: {
+                        perPage: 1,
+                    },
+                    1420: {
+                        perPage: 1,
+                    }
+                }
+
+            });
+            splide.mount();
+        });
+    </script>
 </div>
 @endsection

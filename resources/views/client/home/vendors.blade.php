@@ -1,6 +1,10 @@
 @extends('client.layout.app')
 
 @section('content')
+
+{{-- Alert messages --}}
+@include('client.alert.app')
+
 <div class="container">
     <div>
         @foreach ($vendors as $vendor)
@@ -21,7 +25,7 @@
         </div>
         <div class="border-bottom pb-1 text-secondary" style="font-size: 13px;">
             <span class="fw-semibold ">Followers: </span><span class="fw-bolder">{{ $vendor->followers_count }}</span>
-            <span class="fw-semibold ms-2">Followings: </span><span class="fw-bolder">{{ $vendor->followings_count }}</span>
+            <span class="fw-semibold ms-2">Products: </span><span class="fw-bolder">{{ $vendor->products_count }}</span>
         </div>
         @endforeach
     </div>

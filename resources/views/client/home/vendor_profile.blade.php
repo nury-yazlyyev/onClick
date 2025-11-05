@@ -48,7 +48,7 @@
                 <div class="col">
                     <div class="card h-100">
                         <a href="{{ route('show', $product->id ) }}" class="text-decoration-none">
-                            <img src="{{ asset($product->img_path) }}" alt="" class="img-fluid">
+                            <img src="{{ asset('storage/' . $product->img_path) }}" alt="" class="img-fluid">
                         </a>
                         <div class="p-2 d-flex flex-column">
                             <div class="fw-bold">{{ $product->name }}</div>

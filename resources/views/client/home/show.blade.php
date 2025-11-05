@@ -11,7 +11,7 @@
         {{-- Ürün görseli --}}
         <div class="col-md-4 text-center">
             <div class="card border-0 shadow-sm">
-                <img src="{{ asset($product->img_path) }}" alt="{{ $product->name }}" class="img-fluid rounded-3">
+                <img src="{{ asset('storage/' . $product->img_path) }}" alt="{{ $product->name }}" class="img-fluid rounded-3">
             </div>
         </div>
 

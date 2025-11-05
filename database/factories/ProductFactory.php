@@ -29,7 +29,7 @@ class ProductFactory extends Factory
         return [
             'vendor_id' => $vendor_id->id,
             'category_id' => $category_id->id,
-            'img_path' =>Storage::url($img),
+            'img_path' =>null,
             'name' => fake()->sentence(3),
             'price' => fake()->numberBetween(50,1000),
             'description' =>fake()->sentence(),

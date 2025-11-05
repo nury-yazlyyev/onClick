@@ -77,7 +77,7 @@ class HomeController extends Controller
     }
 
     public function shops(){
-        $vendors = Vendor::withCount(['followers', 'followings'])->get();
+        $vendors = Vendor::withCount(['followers', 'followings','products'])->get();
         $user_me = Auth::user();
 
         return view('client.home.vendors')->with([
