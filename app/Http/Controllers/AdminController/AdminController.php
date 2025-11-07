@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Vendor;
-use Illuminate\Container\Attributes\Storage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -48,13 +48,13 @@ class AdminController extends Controller
         ]);
 
             // $imagePath=null;
-
+        $vendor = Vendor::where('user_id', Auth::user()->id)->first();
         if($request->hasFile('image')){
             $imagePath = $request->file('image')->store('images/post-images', 'public');
         }
 
         Product::create([
-            'vendor_id' => 1,
+            'vendor_id' =>$vendor->id,
             'category_id' => $request->category_id,
             'img_path' =>$imagePath ? $imagePath : null,
             'name' => $request->name,

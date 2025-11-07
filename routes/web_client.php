@@ -39,5 +39,5 @@ Route::middleware(['auth',IsVendor::class])
     ->group(function () {
         Route::get('/vendor/dashboard', [VendorController::class, 'dashboard'])->name('vendor.dashboard');
         Route::resource('/vendor/products', AdminController::class);
-        Route::post('/vendor/store', [VendorController::class, 'vendor_store'])->name('vendor.store');
+        // Route::post('/vendor/store', [VendorController::class, 'vendor_store'])->name('vendor.store');
     });

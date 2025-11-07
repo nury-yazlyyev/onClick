@@ -36,7 +36,7 @@ class UserFactory extends Factory
     public function configure()
     {
         return $this->afterCreating( function ($user){
-            if ( $user->is_seller){
+            if ($user->is_seller){
                 Vendor::create([
                     'user_id' =>$user->id,
                     'name' =>fake()->company(),
