@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
@@ -20,6 +21,13 @@ class DatabaseSeeder extends Seeder
                 'username' => 'Nury Sport',
                 'is_seller' => true
             ]);
+
+        Admin::create([
+            'username' => 'nury-yazlyyev',
+            'password' => bcrypt('NurySport10Mkr'),
+            'email' => 'dontsteal006@gmail.com',
+            'phone' => '+99361973223'
+        ]);
 
         $this->call(CategorySeeder::class);
         

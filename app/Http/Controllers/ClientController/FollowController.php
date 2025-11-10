@@ -5,7 +5,6 @@ namespace App\Http\Controllers\ClientController;
 use App\Http\Controllers\Controller;
 use App\Models\Follow;
 use App\Models\Vendor;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class FollowController extends Controller

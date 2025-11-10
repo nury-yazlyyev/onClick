@@ -18,7 +18,7 @@ class AdminController extends Controller
         $products = Product::paginate(20);
         $i=1;
 
-        return view('admin.admin')->with([
+        return view('admin.index')->with([
             'categories' =>$categories,
             'vendors' =>$vendors,
             'products' =>$products,

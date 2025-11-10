@@ -3,7 +3,7 @@
 @section('content')
 <div class="container-xxl">
     <div class="text-end">
-        <a href="{{ route('create.product') }}" class="btn btn-success">Haryt Gos</a>  
+        <a href="{{ route('admin.create.product') }}" class="btn btn-success">Haryt Gos</a>  
     </div>
     <div>
     <table class="table table-bordered">
