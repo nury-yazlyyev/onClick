@@ -49,43 +49,26 @@
                 </div>
             </div>
         </div>
-        <div class="col-10">
-            <section id="banner" class="splide mt-1 overflow-hidden" aria-label="meals">
+        <div class="col-lg-10">
+            {{-- Banner 1 --}}
+            <section class="splide mb-4" id="banner" aria-label="Taze Gelenler">
                 <div class="splide__track">
-                    <label for="banner" class="fw-bold h1">Taze Gelenler</label>
-                    <ul class="splide__list" id="banner">
+                    <h3 class="fw-bold mb-3">🆕 Taze Gelenler</h3>
+                    <ul class="splide__list">
                         @foreach ($products as $product)
                         <li class="splide__slide">
-                            <div class="card h-100 d-flex flex-column">
-                                <div>
-                                    <a href="{{ route('show', $product->id ) }}" class="text-decoration-none">
-                                        <img src="{{ asset('storage/' . $product->img_path) }}" alt="" class="img-fluid">
-                                    </a>
-                                </div>
-                                <div class="p-2">
-                                    <div class="fw-bold text-truncate" style="font-size: 14px; max-width: 170px;">
-                                        <span>{{$product->name}}</span>
-                                    </div>
-                                    <div>
-                                        <div id="stars-2" style="font-size: 12px;">
-                                            <i onclick="addPoint(this, 1)" class="bi bi-star text-warning"></i>
-                                            <i onclick="addPoint(this, 2)" class="bi bi-star text-warning"></i>
-                                            <i onclick="addPoint(this, 3)" class="bi bi-star text-warning"></i>
-                                            <i onclick="addPoint(this, 4)" class="bi bi-star text-warning"></i>
-                                            <i onclick="addPoint(this, 5)" class="bi bi-star text-warning"></i>
-                                            <span class="text-secondary" id="starsNum">(0)</span>
-                                        </div>
-                                        <a href="{{ route('show', $product->id ) }}" class="text-decoration-none text-black">
-                                            <div class="mt-1 text-truncate" style="font-size: 13px; max-width: 170px;">
-                                                <span class="fw-semibold">Satyjy: </span>{{$product->vendor->name ?? 'Nabelli'}}
-                                            </div>
-                                            <div class="my-1" style="font-size: 13px;">
-                                                <span class="fw-semibold">{{ __('app.category') }}: </span>{{ $product->category->name ?? 'Nabelli' }}
-                                            </div>
-                                            <div class="d-flex justify-content-between">
-                                                <span class="fw-bolder" style="font-size: 13px; color: #FF6620;">{{ __('app.price') }}: </span><span><span class="text-success fw-bold" style="color: #FF6620; font-size: 15px;">{{$product->price}}</span><span class="text-success fw-bold ms-1" style="font-size: 15px;">TMT</span></span>
-                                            </div>
-                                            <button class="btn w-100 mt-2 fw-semibold card-footer mt-auto" style="background-color: #FF6620;" onclick="Orders2(this)"><a href="{{ route('show', $product->id ) }}" class="text-decoration-none text-white" style="font-size: 14px;">{{ __('app.view_product') . ' '}}</a><i class="bi bi-basket text-white" style="font-size: 14px;"></i></button>
+                            <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
+                                <a href="{{ route('show', $product->id) }}">
+                                    <img src="{{ asset('storage/' . $product->img_path) }}" class="card-img-top object-fit-cover" style="height: 200px;">
+                                </a>
+                                <div class="card-body">
+                                    <h6 class="fw-bold text-truncate">{{ $product->name }}</h6>
+                                    <p class="text-muted small mb-1">Satıcı: {{ $product->vendor->name ?? 'Bilinmiyor' }}</p>
+                                    <p class="text-muted small mb-2">Kategori: {{ $product->category->name ?? 'Belirsiz' }}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="fw-bold text-danger">{{ $product->price }} TMT</span>
+                                        <a href="{{ route('show', $product->id) }}" class="btn btn-sm btn-warning text-white fw-semibold">
+                                            İncele <i class="bi bi-basket ms-1"></i>
                                         </a>
                                     </div>
                                 </div>
@@ -95,55 +78,38 @@
                     </ul>
                 </div>
             </section>
-            <section id="banner-2" class="splide mt-1 overflow-hidden" aria-label="meals">
+
+            {{-- Banner 2 --}}
+            <section class="splide mb-4" id="banner-2" aria-label="En Çok Görüntülenenler">
                 <div class="splide__track">
-                    <label for="banner-2" class="fw-bold h1">In Kan Halananlar</label>
-                    <ul class="splide__list" id="banner-2">
-                        @forelse($products as $product)
+                    <h3 class="fw-bold mb-3">🔥 En Çok Görüntülenenler</h3>
+                    <ul class="splide__list">
+                        @forelse ($products as $product)
                         <li class="splide__slide">
-                            <div class="card h-100 d-flex flex-column">
-                                <div>
-                                    <a href="{{ route('show', $product->id ) }}" class="text-decoration-none">
-                                        <img src="{{ asset('storage/' . $product->img_path) }}" alt="" class="img-fluid">
-                                    </a>
-                                </div>
-                                <div class="p-2">
-                                    <div class="fw-bold text-truncate" style="font-size: 14px; max-width: 170px;">
-                                        <span>{{$product->name}}</span>
-                                    </div>
-                                    <div>
-                                        <div id="stars-2" style="font-size: 12px;">
-                                            <i onclick="addPoint(this, 1)" class="bi bi-star text-warning"></i>
-                                            <i onclick="addPoint(this, 2)" class="bi bi-star text-warning"></i>
-                                            <i onclick="addPoint(this, 3)" class="bi bi-star text-warning"></i>
-                                            <i onclick="addPoint(this, 4)" class="bi bi-star text-warning"></i>
-                                            <i onclick="addPoint(this, 5)" class="bi bi-star text-warning"></i>
-                                            <span class="text-secondary" id="starsNum">(0)</span>
-                                        </div>
-                                        <a href="{{ route('show', $product->id ) }}" class="text-decoration-none text-black">
-                                            <div class="mt-1 text-truncate" style="font-size: 13px; max-width: 170px;">
-                                                <span class="fw-semibold">Satyjy: </span>{{$product->vendor->name ?? 'Nabelli'}}
-                                            </div>
-                                            <div class="my-1" style="font-size: 13px;">
-                                                <span class="fw-semibold">{{ __('app.category') }}: </span>{{ $product->category->name ?? 'Nabelli' }}
-                                            </div>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <span class="fw-bolder" style="font-size: 13px; color: #FF6620;">{{ __('app.price') }}: </span><span><span class="text-success fw-bold" style="color: #FF6620; font-size: 15px;">{{$product->price}}</span><span class="text-success fw-bold ms-1" style="font-size: 15px;">TMT</span></span>
-                                            </div>
-                                            <button class="btn w-100 mt-2 fw-semibold card-footer mt-auto" style="background-color: #FF6620;" onclick="Orders2(this)"><a href="{{ route('show', $product->id ) }}" class="text-decoration-none text-white" style="font-size: 14px;">{{ __('app.view_product') . ' '}}</a><i class="bi bi-basket text-white" style="font-size: 14px;"></i></button>
+                            <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
+                                <a href="{{ route('show', $product->id) }}">
+                                    <img src="{{ asset('storage/' . $product->img_path) }}" class="card-img-top object-fit-cover" style="height: 200px;">
+                                </a>
+                                <div class="card-body">
+                                    <h6 class="fw-bold text-truncate">{{ $product->name }}</h6>
+                                    <p class="text-muted small mb-1">Satıcı: {{ $product->vendor->name ?? 'Bilinmiyor' }}</p>
+                                    <p class="text-muted small mb-2">Kategori: {{ $product->category->name ?? 'Belirsiz' }}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="fw-bold text-danger">{{ $product->price }} TMT</span>
+                                        <a href="{{ route('show', $product->id) }}" class="btn btn-sm btn-warning text-white fw-semibold">
+                                            İncele <i class="bi bi-basket ms-1"></i>
                                         </a>
                                     </div>
                                 </div>
                             </div>
                         </li>
                         @empty
-                        <div class="h1 fw-bold ">
-                            Haryt Tapylmady...
-                        </div>
+                        <div class="text-center py-5 fw-bold fs-4">Ürün Bulunamadı 😔</div>
                         @endforelse
                     </ul>
                 </div>
             </section>
+
             <div class="mt-4">
                 {{ $products->links('pagination::bootstrap-5') }}
             </div>
@@ -153,55 +119,36 @@
     <script src="{{ asset('js/app.js') }}"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var splide = new Splide('#banner', {
-                type: 'loop',
-                autoplay: 1, // Awtomat ozi gecip duran etmegi [0, 1]
-                arrows: 1, // gapdaldaky strelka  [0, 1]
-                interval: 2000, // nace millisekunt wagtdan gecmelidigi  
-                pauseOnHover: 1, // ustune baranynda pause bolyar  [0, 1]
-                perMove: 1, // nace slide yygylykda gecmeli
-                perPage: 6, // her sahypada nace slide gorkezmeli
-                gap: "1rem",
-                breakpoints: {
-                    640: {
-                        perPage: 2,
-                    },
-                    990: {
-                        perPage: 4,
-                    },
-                    1420: {
-                        perPage: 6,
+        document.addEventListener('DOMContentLoaded', () => {
+            const banners = ['#banner', '#banner-2'];
+            banners.forEach(id => {
+                new Splide(id, {
+                    type: 'loop',
+                    autoplay: true,
+                    interval: 2500,
+                    pauseOnHover: true,
+                    arrows: true,
+                    gap: '1rem',
+                    perPage: 6,
+                    breakpoints: {
+                        1400: {
+                            perPage: 5
+                        },
+                        1200: {
+                            perPage: 4
+                        },
+                        992: {
+                            perPage: 3
+                        },
+                        768: {
+                            perPage: 2
+                        },
+                        576: {
+                            perPage: 1
+                        }
                     }
-                }
-
+                }).mount();
             });
-            splide.mount();
-        });
-        document.addEventListener('DOMContentLoaded', function() {
-            var splide = new Splide('#banner-2', {
-                type: 'loop',
-                autoplay: 1, // Awtomat ozi gecip duran etmegi [0, 1]
-                arrows: 1, // gapdaldaky strelka  [0, 1]
-                interval: 2000, // nace millisekunt wagtdan gecmelidigi  
-                pauseOnHover: 1, // ustune baranynda pause bolyar  [0, 1]
-                perMove: 1, // nace slide yygylykda gecmeli
-                perPage: 6, // her sahypada nace slide gorkezmeli
-                gap: "1rem",
-                breakpoints: {
-                    640: {
-                        perPage: 2,
-                    },
-                    990: {
-                        perPage: 4,
-                    },
-                    1420: {
-                        perPage: 6,
-                    }
-                }
-
-            });
-            splide.mount();
         });
     </script>
 </div>

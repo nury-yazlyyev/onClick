@@ -48,19 +48,28 @@ class User extends Authenticatable
         ];
     }
 
-    public function vendor(){
+    public function vendor()
+    {
         return $this->hasOne(Vendor::class);
     }
 
-    public function followers(){
+    public function followers()
+    {
         return $this->hasMany(Follow::class, 'follower_id', 'id');
     }
 
-    public function followings(){
+    public function followings()
+    {
         return $this->hasMany(Follow::class, 'following_id', 'id');
     }
 
-    public function isFollow($user){
+    public function isFollow($user)
+    {
         return $this->followings()->where('follower_id', $user)->exists();
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
     }
 }

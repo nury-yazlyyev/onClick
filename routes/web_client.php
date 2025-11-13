@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController\AdminController;
 use App\Http\Controllers\ClientController\FollowController;
 use App\Http\Controllers\ClientController\HomeController;
+use App\Http\Controllers\ClientController\LikeController;
 use App\Http\Controllers\ClientController\LoginController;
 use App\Http\Controllers\ClientController\SigninController;
 use App\Http\Controllers\ClientController\VendorController;
@@ -34,6 +35,8 @@ Route::middleware('auth')
 Route::middleware('auth',IsClient::class)
     ->group(function () {
         Route::post('/follow/{vendorId}', [FollowController::class, 'following'])->name('follow');
+        Route::post('like/{product_id}', [LikeController::class, 'like'])->name('like');
+        Route::get('liked', [LikeController::class, 'liked'])->name('liked');
     });
 Route::middleware(['auth',IsVendor::class])
     ->group(function () {

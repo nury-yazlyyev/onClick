@@ -15,5 +15,4 @@ Route::middleware('auth:admin')->group(function () {
         Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
         Route::get('/admin/create', [AdminController::class, 'create'])->name('admin.create.product');
         Route::post('/admin/store', [AdminController::class, 'store'])->name('admin.store.product');
-        Route::post('logout', [LoginController::class, 'destroy'])->name('logout');
     });

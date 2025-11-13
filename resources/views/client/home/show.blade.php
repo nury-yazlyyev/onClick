@@ -18,8 +18,22 @@
         {{-- Ürün detayları --}}
         <div class="col-md-5">
             <div class="card border-0 shadow-sm p-4 h-100">
-                <h4 class="fw-bold mb-2 text-warning">{{ $product->name }}</h4>
-
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="fw-bold mb-2 text-warning">{{ $product->name }}</h4>
+                    </div>
+                    @if (!auth()->user()->is_seller)
+                    <div>
+                        <form action="{{ route('like', $product->id) }}" method="post" class="w-100">
+                            @csrf
+                            <input type="hidden">
+                            <button type="submit" class="interaction-btn bg-white border-0 {{ $product->LikedBy(auth()->user()) ? 'liked' : '' }}">
+                                <i class="bi bi-heart{{ $product->LikedBy(auth()->user()) ? '-fill' : '' }} text-danger"></i>
+                            </button>
+                        </form>
+                    </div>
+                    @endif
+                </div>
                 <div class="mb-2">
                     <span class="fw-semibold text-secondary">{{ __('app.category') }}:</span>
                     <span class="fw-bold">{{ $product->category->name ?? 'N/A' }}</span>
@@ -34,7 +48,6 @@
                     <span class="fw-semibold text-secondary">{{ __('app.description') }}:</span>
                     <p class="mb-0 mt-1">{{ $product->description }}</p>
                 </div>
-
                 <div class="d-flex gap-3 mt-auto">
                     <button class="btn btn-warning text-white fw-semibold flex-grow-1">
                         <i class="bi bi-lightning-charge-fill me-1"></i> Quick Buy
@@ -85,13 +98,13 @@
                 <form action="{{ route('follow', $vendor ?? $product->vendor->id) }}" method="post">
                     @csrf
                     @if (auth()->check() && auth()->user()->isFollow($user->id))
-                        <button type="submit" class="btn btn-warning w-100 fw-semibold text-white">
-                            <i class="bi bi-person-check-fill me-1"></i> {{ __('app.following') }}
-                        </button>
+                    <button type="submit" class="btn btn-warning w-100 fw-semibold text-white">
+                        <i class="bi bi-person-check-fill me-1"></i> {{ __('app.following') }}
+                    </button>
                     @else
-                        <button type="submit" class="btn btn-outline-warning w-100 fw-semibold">
-                            <i class="bi bi-person-plus me-1"></i> {{ __('app.follow') }}
-                        </button>
+                    <button type="submit" class="btn btn-outline-warning w-100 fw-semibold">
+                        <i class="bi bi-person-plus me-1"></i> {{ __('app.follow') }}
+                    </button>
                     @endif
                 </form>
             </div>

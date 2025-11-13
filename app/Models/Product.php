@@ -36,10 +36,23 @@ class Product extends Model
         return $this->description;
     }
 
-    public function vendor(){
+    public function vendor()
+    {
         return $this->belongsTo(Vendor::class);
     }
-    public function category(){
+
+    public function category()
+    {
         return $this->belongsTo(Category::class);
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    public function LikedBy(User $user)
+    {
+        return $this->likes()->where('user_id', $user->id)->exists();
     }
 }
