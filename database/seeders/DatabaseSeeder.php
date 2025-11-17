@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Admin;
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\Vendor;
@@ -31,12 +32,30 @@ class DatabaseSeeder extends Seeder
 
         $this->call(CategorySeeder::class);
         
-        User::factory(100)->create();
-        Product::factory(150)->create();
+        User::factory(50)->create();
+        Product::factory(90)->create();
        
         Vendor::where('id', 1)->update([
             'name' => 'Nury Sport',
         ]);
+
+        $users = User::all();
+        $products = Product::all();
+
+        foreach ($users as $user)
+        {
+            foreach ($products as $product)
+            {
+                if (rand(0,1)){
+                    Comment::create([
+                        'product_id' => $product->id,
+                        'user_id' => $user->id,
+                        'comment' => 'Amazing product, I loved it, bought it in Australia, good job guys!))'
+                    ]);
+                }
+
+            }
+        }
         
         }
 }

@@ -17,19 +17,15 @@
                         <div class="text-secondary small">Products</div>
                     </div>
                     <div>
-                        <div class="fw-bold">{{ $vendor->followers_count }}</div>
+                        <div class="fw-bold">{{ $vendor->followers->count() ?? 0 }}</div>
                         <div class="text-secondary small">Followers</div>
-                    </div>
-                    <div>
-                        <div class="fw-bold">{{ $vendor->followings_count }}</div>
-                        <div class="text-secondary small">Followings</div>
                     </div>
                 </div>
 
                 <div class="p-3 w-100">
                     <form action="{{ route('follow', $vendor->id) }}" method="post">
                         @csrf
-                        @if (auth()->check() && auth()->user()->isFollow($vendor->user_id))
+                        @if (auth()->check() && auth()->user()->isFollow($vendor->id))
                         <button type="submit" class="btn btn-warning w-100 fw-semibold text-white">
                             <i class="bi bi-person-check me-1"></i> Following
                         </button>

@@ -7,8 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 class Follow extends Model
 {
     protected $fillable = [
-        'follower_id',
-        'following_id'
+        'vendor_id',
+        'user_id'
     ];
+
+    public function vendor()
+    {
+        return $this->belongsTo(Vendor::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
 }

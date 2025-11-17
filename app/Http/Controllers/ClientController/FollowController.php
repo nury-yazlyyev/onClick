@@ -11,12 +11,11 @@ class FollowController extends Controller
 {
     public function following ($vendorId)
     {
-        $user = Auth::user()->id;
-        $user2 = Vendor::where('id', $vendorId)->first();
+        $userId = Auth::user()->id;
 
-        $isFollowing = Follow::where('following_id', $user)->where('follower_id',$user2->user_id)->first();
+        $isFollowing = Follow::where('user_id', $userId)->where('vendor_id',$vendorId)->first();
 
-        if ($user == $user2->user_id){
+        if ($userId == $vendorId){
             return back()->with([
                 'error' => 'Oz-ozini pod edip bolonok'
             ]);
@@ -28,14 +27,13 @@ class FollowController extends Controller
         } else 
         {
             Follow::create([
-                'following_id' => $user,
-                'follower_id' => $user2->user_id,
+                'user_id' => $userId,
+                'vendor_id' => $vendorId,
             ]);
         }
 
-        return back()->with([
-            'success' =>'User succesfully',
-            
+        return redirect()->back()->with([
+            'isFollowing' => $isFollowing
         ]);
     }
 }

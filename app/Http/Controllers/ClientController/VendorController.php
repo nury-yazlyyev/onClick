@@ -72,7 +72,7 @@ class VendorController extends Controller
 
     public function vendor_profile($id)
     {
-        $vendor = Vendor::withCount(['followers','followings', 'products'])->where('id', $id)->firstOrFail();
+        $vendor = Vendor::withCount(['products'])->where('id', $id)->firstOrFail();
         $products = $vendor->products;
 
         return view('client.home.vendor_profile')->with([
@@ -94,34 +94,4 @@ class VendorController extends Controller
             'products' =>$vendor->products
         ]);
     }
-
-//     public function vendor_store(Request $request)
-//     {
-//         $request->validate([
-//             'name' => ['required', 'max:255'],
-//             'price' => ['required', 'integer', 'min:1'],
-//             'category_id' => ['required', 'string'],
-//             'description' => ['nullable', 'max:255'],
-//             'image' => ['nullable', 'mimes:jpg,png,jpeg,JPEG', 'max:2048']
-//         ]);
-
-//         $user = Auth::user();
-
-//         if ($request->hasFile('image')) {
-//             $imagePath = $request->file('image')->store('images/post-images', 'public');
-//         }
-
-//         Product::create([
-//             'vendor_id' => $user->vendor->id,
-//             'category_id' => $request->category_id,
-//             'img_path' => $imagePath ? $imagePath : null,
-//             'name' => $request->name,
-//             'price' => $request->price,
-//             'description' => $request->description
-//         ]);
-
-//         return redirect()->back()->with([
-//             'success' => 'Haryt ustunlikli gosuldy!',
-//         ]);
-//     }
  }

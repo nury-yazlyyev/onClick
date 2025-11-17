@@ -63,21 +63,21 @@ class HomeController extends Controller
     {
 
         $product = Product::where('id', $id)->firstOrFail();
-        $vendor_id = $product->vendor_id;
-        $vendor = Vendor::where('id', $vendor_id)->first();
-        $vendor_user = User::withCount(['followers', 'followings'])->where('id', $vendor->user_id)->first();
+        $vendor = Vendor::where('id', $product->vendor_id)->first();
         $user = Auth::user();
+        $totalComments = $product->comments->count();
 
         return view('client.home.show')->with([
             'product' => $product,
-            'vendor' =>$vendor_id,
-            'user' => $vendor_user,
-            'client' =>$user
+            'vendorId' =>$vendor->id,
+            'vendor' =>$vendor,
+            'user' =>$user,
+            'totalComments' => $totalComments
         ]);
     }
 
     public function shops(){
-        $vendors = Vendor::withCount(['followers', 'followings','products'])->get();
+        $vendors = Vendor::get();
         $user_me = Auth::user();
 
         return view('client.home.vendors')->with([

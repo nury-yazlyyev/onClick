@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController\AdminController;
+use App\Http\Controllers\ClientController\CommentController;
 use App\Http\Controllers\ClientController\FollowController;
 use App\Http\Controllers\ClientController\HomeController;
 use App\Http\Controllers\ClientController\LikeController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\ClientController\SigninController;
 use App\Http\Controllers\ClientController\VendorController;
 use App\Http\Middleware\IsClient;
 use App\Http\Middleware\IsVendor;
+use App\Models\Comment;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/',[HomeController::class,'home'])->name('home');
@@ -37,6 +39,7 @@ Route::middleware('auth',IsClient::class)
         Route::post('/follow/{vendorId}', [FollowController::class, 'following'])->name('follow');
         Route::post('like/{product_id}', [LikeController::class, 'like'])->name('like');
         Route::get('liked', [LikeController::class, 'liked'])->name('liked');
+        Route::post('comment/{id}', [CommentController::class, 'store'])->name('add.comment');
     });
 Route::middleware(['auth',IsVendor::class])
     ->group(function () {

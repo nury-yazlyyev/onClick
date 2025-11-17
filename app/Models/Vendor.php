@@ -26,11 +26,6 @@ class Vendor extends Model
     }
 
     public function followers(){
-        return $this->hasMany(Follow::class, 'follower_id', 'id');
+        return $this->hasMany(Follow::class);
     }
-
-    public function followings(){
-        return $this->hasMany(Follow::class, 'following_id', 'id');
-    }
-
 }

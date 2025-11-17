@@ -15,7 +15,7 @@
             <div class="text-center">
                 <form action="{{ route('follow', $vendor->id) }}" method="post">
                     @csrf
-                    @if ($user_me && $user_me->isFollow($vendor->user_id))
+                    @if ($user_me && $user_me->isFollow($vendor->id))
                     <button type="submit" class="btn btn-warning w-100 fw-semibold text-white">{{ __('app.following') }}</button>
                     @else
                     <button type="submit" class="btn btn-outline-warning w-100 fw-semibold">{{ __('app.follow') }}</button>
@@ -24,8 +24,8 @@
             </div>
         </div>
         <div class="border-bottom pb-1 text-secondary" style="font-size: 13px;">
-            <span class="fw-semibold ">Followers: </span><span class="fw-bolder">{{ $vendor->followers_count }}</span>
-            <span class="fw-semibold ms-2">Products: </span><span class="fw-bolder">{{ $vendor->products_count }}</span>
+            <span class="fw-semibold ">Followers: </span><span class="fw-bolder">{{ $vendor->followers()->count() }}</span>
+            <span class="fw-semibold ms-2">Products: </span><span class="fw-bolder">{{ $vendor->products()->count() }}</span>
         </div>
         @endforeach
     </div>

@@ -22,7 +22,7 @@
                     <div>
                         <h4 class="fw-bold mb-2 text-warning">{{ $product->name }}</h4>
                     </div>
-                    @if (!auth()->user()->is_seller)
+                    @if (auth()->check() && !auth()->user()->is_seller)
                     <div>
                         <form action="{{ route('like', $product->id) }}" method="post" class="w-100">
                             @csrf
@@ -57,6 +57,101 @@
                         <i class="bi bi-basket me-1"></i> {{ __('app.add_to_cart') }}
                     </button>
                 </div>
+                <div>
+                    <div class="mt-4">
+
+                        <h5 class="mb-3 fw-bold">Comments ({{ $product->comments->count() }})</h5>
+
+                        @foreach ($product->comments as $comment)
+                        <div class="card mb-3 shadow-sm border-0 comment-item">
+                            <div class="card-body d-flex">
+
+                                {{-- Avatar --}}
+                                <div class="me-3">
+                                    <img src="{{ $comment->user->avatar ?? 'https://ui-avatars.com/api/?name=' . $comment->user->username }}" alt="avatar" class="rounded-circle" width="45" height="45">
+                                </div>
+
+                                {{-- Content --}}
+                                <div class="w-100">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="fw-semibold mb-1">{{ $comment->user->username }}</h6>
+                                        <small class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
+                                    </div>
+
+                                    <p class="mb-0 text-secondary" style="font-size: 0.85rem;">
+                                        {{ $comment->comment }}
+                                    </p>
+                                    <div class="d-flex">
+                                        <div>
+                                            <div onclick="addSubcomment(this)" class="me-2">
+                                                Reply
+                                            </div>
+                                            <div class="d-none">
+                                                <form action="{{ route('add.comment', $product->id) }}" method="post">
+                                                    @csrf
+                                                    <div class="mb-3">
+                                                        <textarea name="comment" class="form-control mt-1 @error('comment') is-invalid @enderror" rows="1" placeholder="Add your comment here..."></textarea>
+                                                        @error('comment')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+                                                    <button type="submit" value="{{ $comment->id }}" name="parentId" class="btn btn-warning btn-sm text-white fw-semibold">
+                                                        Add Comment
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            @if (count($comment->childrens) >0)
+                                            <div onclick="showSubcomment(this)">
+                                                Show
+                                            </div>
+                                            <div class="d-none">
+                                                <div class="w-100">
+                                                    @foreach ($comment->childrens as $child)
+                                                    <div class="d-flex justify-content-between">
+                                                        <h6 class="fw-semibold mb-1">{{ $child->user->username }}</h6>
+                                                        <small class="text-muted">{{ $child->created_at->diffForHumans() }}</small>
+                                                    </div>
+                                                    <p class="mb-0 text-secondary" style="font-size: 0.85rem;">
+                                                        {{ $child->comment }}
+                                                    </p>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        @endforeach
+
+                        <div class="mt-4">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h5 class="fw-bold mb-3">Add Comment</h5>
+                                </div>
+                            </div>
+                            <form action="{{ route('add.comment', $product->id) }}" method="POST">
+                                @csrf
+
+                                <div class="mb-3">
+                                    <textarea name="comment" class="form-control @error('comment') is-invalid @enderror" rows="3" placeholder="Add your comment here..."></textarea>
+
+                                    @error('comment')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <button type="submit" class="btn btn-warning text-white fw-semibold">
+                                    Add Comment
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -70,12 +165,7 @@
 
                 <div class="mb-2">
                     <span class="fw-semibold text-secondary">Followers:</span>
-                    <span class="fw-bold">{{ $user->followers_count ?? 0 }}</span>
-                </div>
-
-                <div class="mb-2">
-                    <span class="fw-semibold text-secondary">Followings:</span>
-                    <span class="fw-bold">{{ $user->followings_count ?? 0 }}</span>
+                    <span class="fw-bold">{{ $vendor->followers->count() ?? 0 }}</span>
                 </div>
 
                 {{-- Rating --}}
@@ -95,9 +185,9 @@
                     </button>
                 </form>
                 {{-- Follow / Unfollow --}}
-                <form action="{{ route('follow', $vendor ?? $product->vendor->id) }}" method="post">
+                <form action="{{ route('follow', $vendorId) }}" method="post">
                     @csrf
-                    @if (auth()->check() && auth()->user()->isFollow($user->id))
+                    @if (auth()->check() && $user->isFollow($vendorId))
                     <button type="submit" class="btn btn-warning w-100 fw-semibold text-white">
                         <i class="bi bi-person-check-fill me-1"></i> {{ __('app.following') }}
                     </button>
@@ -111,4 +201,32 @@
         </div>
     </div>
 </div>
+{{-- JS to toggle comments --}}
+<script>
+    function addSubcomment(btn) {
+        let subcomment = btn.nextElementSibling;
+        subcomment.classList.toggle('d-none');
+
+        let btnText = btn.textContent;
+
+        if (btnText == 'Hide') {
+            btn.textContent = 'Reply';
+        } else {
+            btn.textContent = 'Hide';
+        }
+    };
+
+    function showSubcomment(btn) {
+        let subcomment = btn.nextElementSibling;
+        subcomment.classList.toggle('d-none');
+
+        let btnText = btn.textContent;
+
+        if (btnText == 'Hide') {
+            btn.textContent = 'Show';
+        } else {
+            btn.textContent = 'Hide';
+        }
+    };
+</script>
 @endsection
