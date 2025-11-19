@@ -16,6 +16,7 @@ class Product extends Model
     protected $fillable = [
         'vendor_id',
         'category_id',
+        'size_id',
         'img_path',
         'name',
         'price',
@@ -54,6 +55,11 @@ class Product extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function size()
+    {
+        return $this->belongsTo(Size::class);
     }
 
     public function LikedBy(User $user)

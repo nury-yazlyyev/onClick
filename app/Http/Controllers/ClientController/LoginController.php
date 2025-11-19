@@ -21,7 +21,7 @@ class LoginController extends Controller
 
             $request->session()->regenerate();
 
-            return redirect()->route('home')->with([
+            return redirect()->back()->with([
                 'success' =>'Ustunlikli giris edildi'
             ]);
         }

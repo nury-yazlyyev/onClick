@@ -65,6 +65,7 @@ class HomeController extends Controller
         $product = Product::where('id', $id)->firstOrFail();
         $vendor = Vendor::where('id', $product->vendor_id)->first();
         $user = Auth::user();
+        $is_auth = Auth::check();
         $totalComments = $product->comments->count();
 
         return view('client.home.show')->with([
@@ -72,7 +73,8 @@ class HomeController extends Controller
             'vendorId' =>$vendor->id,
             'vendor' =>$vendor,
             'user' =>$user,
-            'totalComments' => $totalComments
+            'totalComments' => $totalComments,
+            'is_auth' => $is_auth
         ]);
     }
 

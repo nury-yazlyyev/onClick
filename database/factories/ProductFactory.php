@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Category;
+use App\Models\Size;
 use App\Models\Vendor;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Storage;
@@ -26,9 +27,12 @@ class ProductFactory extends Factory
 
         $vendor_id = Vendor::inRandomOrder()->first();
         $category_id = Category::inRandomOrder()->first();
+        $size_id = Size::inRandomOrder()->first();
+
         return [
             'vendor_id' => $vendor_id->id,
             'category_id' => $category_id->id,
+            'size_id' => $size_id->id,
             'img_path' =>null,
             'name' => fake()->sentence(3),
             'price' => fake()->numberBetween(50,1000),

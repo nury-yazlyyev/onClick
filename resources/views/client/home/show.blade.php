@@ -22,7 +22,7 @@
                     <div>
                         <h4 class="fw-bold mb-2 text-warning">{{ $product->name }}</h4>
                     </div>
-                    @if (auth()->check() && !auth()->user()->is_seller)
+                    @if ($is_auth && !auth()->user()->is_seller)
                     <div>
                         <form action="{{ route('like', $product->id) }}" method="post" class="w-100">
                             @csrf
@@ -42,6 +42,10 @@
                 <div class="mb-2">
                     <span class="fw-semibold text-secondary">{{ __('app.price') }}:</span>
                     <span class="fw-bold text-warning" style="font-size: 1.2rem;">{{ $product->price }} TMT</span>
+                </div>
+                <div class="mb-2">
+                    <span class="fw-semibold text-secondary">{{ __('app.size') }}:</span>
+                    <span class="fw-bold text-warning" style="font-size: 1.2rem;">{{ $product->size->name }}</span>
                 </div>
 
                 <div class="mb-3">
@@ -63,9 +67,9 @@
                         <h5 class="mb-3 fw-bold">Comments ({{ $product->comments->count() }})</h5>
 
                         @foreach ($product->comments as $comment)
+                        @if ( !isset($comment->parent_id) )
                         <div class="card mb-3 shadow-sm border-0 comment-item">
                             <div class="card-body d-flex">
-
                                 {{-- Avatar --}}
                                 <div class="me-3">
                                     <img src="{{ $comment->user->avatar ?? 'https://ui-avatars.com/api/?name=' . $comment->user->username }}" alt="avatar" class="rounded-circle" width="45" height="45">
@@ -73,21 +77,38 @@
 
                                 {{-- Content --}}
                                 <div class="w-100">
-                                    <div class="d-flex justify-content-between">
+                                    <div class="d-flex justify-content-between align-items-center">
                                         <h6 class="fw-semibold mb-1">{{ $comment->user->username }}</h6>
-                                        <small class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
+                                        <div class="d-flex align-items-center">
+                                            <small class="text-muted me-2">{{ $comment->created_at->diffForHumans() }}</small>
+                                            @if ($is_auth && $user->id == $comment->user_id)
+                                            <div>
+                                                <form action="{{ route('comment.destroy', $comment->id) }}" method="post">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-link p-0"><i class="bi bi-trash"></i></button>
+                                                </form>
+                                            </div>
+                                            @endif
+                                        </div>
                                     </div>
 
                                     <p class="mb-0 text-secondary" style="font-size: 0.85rem;">
                                         {{ $comment->comment }}
                                     </p>
-                                    <div class="d-flex">
-                                        <div>
-                                            <div onclick="addSubcomment(this)" class="me-2">
-                                                Reply
+                                    <div class="">
+                                        <div class="mb-2">
+                                            <div class="d-flex flex-wrap">
+                                                <div onclick="addSubcomment(this)" class="me-2">
+                                                    Reply
+                                                </div>
+                                                @if (count($comment->childrens) > 0)
+                                                <div onclick="showSubcomment(this)">
+                                                    Show
+                                                </div>
+                                                @endif
                                             </div>
                                             <div class="d-none">
-                                                <form action="{{ route('add.comment', $product->id) }}" method="post">
+                                                <form action="{{ route('comment.store', $product->id) }}" method="post">
                                                     @csrf
                                                     <div class="mb-3">
                                                         <textarea name="comment" class="form-control mt-1 @error('comment') is-invalid @enderror" rows="1" placeholder="Add your comment here..."></textarea>
@@ -100,18 +121,28 @@
                                                     </button>
                                                 </form>
                                             </div>
-                                        </div>
-                                        <div>
-                                            @if (count($comment->childrens) >0)
-                                            <div onclick="showSubcomment(this)">
-                                                Show
-                                            </div>
                                             <div class="d-none">
-                                                <div class="w-100">
+                                                <div class="w-100 ms-3">
                                                     @foreach ($comment->childrens as $child)
-                                                    <div class="d-flex justify-content-between">
-                                                        <h6 class="fw-semibold mb-1">{{ $child->user->username }}</h6>
-                                                        <small class="text-muted">{{ $child->created_at->diffForHumans() }}</small>
+                                                    <div class="d-flex justify-content-between flex-wrap">
+                                                        <div class="d-flex flex-wrap align-items-center">
+                                                            {{-- Avatar --}}
+                                                            <div class="me-2">
+                                                                <img src="{{ $comment->user->avatar ?? 'https://ui-avatars.com/api/?name=' . $comment->user->username }}" alt="avatar" class="rounded-circle" width="25" height="25">
+                                                            </div>
+                                                            <h6 class="fw-semibold mb-1">{{ $child->user->username }}</h6>
+                                                        </div>
+                                                        <div class="d-flex my-2">
+                                                            <small class="text-muted">{{ $child->created_at->diffForHumans() }}</small>
+                                                            @if ($is_auth && $user->id == $comment->user_id)
+                                                            <div>
+                                                                <form action="{{ route('comment.destroy', $child->id) }}" method="post">
+                                                                    @csrf
+                                                                    <button type="submit" class="btn btn-link p-0"><i class="bi bi-trash"></i></button>
+                                                                </form>
+                                                            </div>
+                                                            @endif
+                                                        </div>
                                                     </div>
                                                     <p class="mb-0 text-secondary" style="font-size: 0.85rem;">
                                                         {{ $child->comment }}
@@ -119,13 +150,14 @@
                                                     @endforeach
                                                 </div>
                                             </div>
-                                            @endif
                                         </div>
                                     </div>
+
                                 </div>
 
                             </div>
                         </div>
+                        @endif
                         @endforeach
 
                         <div class="mt-4">
@@ -134,7 +166,7 @@
                                     <h5 class="fw-bold mb-3">Add Comment</h5>
                                 </div>
                             </div>
-                            <form action="{{ route('add.comment', $product->id) }}" method="POST">
+                            <form action="{{ route('comment.store', $product->id) }}" method="post">
                                 @csrf
 
                                 <div class="mb-3">
@@ -187,7 +219,7 @@
                 {{-- Follow / Unfollow --}}
                 <form action="{{ route('follow', $vendorId) }}" method="post">
                     @csrf
-                    @if (auth()->check() && $user->isFollow($vendorId))
+                    @if ($is_auth && $user->isFollow($vendorId))
                     <button type="submit" class="btn btn-warning w-100 fw-semibold text-white">
                         <i class="bi bi-person-check-fill me-1"></i> {{ __('app.following') }}
                     </button>
@@ -204,7 +236,7 @@
 {{-- JS to toggle comments --}}
 <script>
     function addSubcomment(btn) {
-        let subcomment = btn.nextElementSibling;
+        let subcomment = btn.parentElement.nextElementSibling;
         subcomment.classList.toggle('d-none');
 
         let btnText = btn.textContent;
@@ -217,7 +249,7 @@
     };
 
     function showSubcomment(btn) {
-        let subcomment = btn.nextElementSibling;
+        let subcomment = btn.parentElement.nextElementSibling.nextElementSibling;
         subcomment.classList.toggle('d-none');
 
         let btnText = btn.textContent;

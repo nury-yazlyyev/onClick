@@ -1,12 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\ClientController;
+namespace App\Http\Controllers\AdminController;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
-use App\Models\Product;
-use App\Models\Size;
-use App\Models\User;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -56,32 +52,5 @@ class VendorController extends Controller
                 'error' => 'Ullanyjy ady ya-da parola yalnys!'
             ]);
         }
-    }
-
-    public function vendor_profile($id)
-    {
-        $vendor = Vendor::withCount(['products'])->where('id', $id)->firstOrFail();
-        $products = $vendor->products;
-
-        return view('client.home.vendor_profile')->with([
-            'vendor' => $vendor,
-            'products' => $products
-        ]);
-    }
-
-    public function dashboard()
-    {
-        $categories = Category::all();
-        $user = User::where('id', Auth::user()->id)->first();
-        $vendor = Vendor::withCount(['products'])->where('user_id', $user->id)->first();
-        $sizes = Size::all();
-
-        return view('vendor.dashboard.dashboard')->with([
-            'categories' => $categories,
-            'user' => $user,
-            'vendor' => $vendor,
-            'products' => $vendor->products,
-            'sizes' => $sizes
-        ]);
     }
 }

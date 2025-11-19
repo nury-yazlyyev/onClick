@@ -29,4 +29,15 @@ class CommentController extends Controller
             'success' => ' Comment succesfully added!'
         ]);
     }
+
+    public function destroy($commentid)
+    {
+        $comment = Comment::where('id', $commentid)->first();
+
+        $comment->delete();
+
+        return back()->with([
+            'success' => 'Comment succesfully deleted'
+        ]);
+    }
 }

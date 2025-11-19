@@ -31,9 +31,11 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call(CategorySeeder::class);
+        $this->call(SizeSeeder::class);
         
         User::factory(50)->create();
         Product::factory(90)->create();
+        
        
         Vendor::where('id', 1)->update([
             'name' => 'Nury Sport',
