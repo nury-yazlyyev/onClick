@@ -13,4 +13,6 @@ return [
     'category' =>'Category',
     'price' =>'Price',
     'description' =>'Description',
+    'size' =>'Size',
+    'color' =>'Color',
 ];

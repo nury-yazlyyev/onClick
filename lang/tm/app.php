@@ -13,4 +13,6 @@ return [
     'category' =>'Kategoriya',
     'price' =>'Baha',
     'description' =>'Dusundiris',
+    'size' =>'Razmer',
+    'color' =>'Renk',
 ];

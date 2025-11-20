@@ -67,16 +67,6 @@
                                 <label class="form-label fw-semibold">Bahasy</label>
                                 <input type="number" name="price" class="form-control" placeholder="Bahany giriziň..." value="{{ old('price') }}">
                             </div>
-                            {{-- Size --}}
-                            <div class="mb-3">
-                                <label for="size" class="form-label fw-semibold">Razmer</label>
-                                <select name="size_id" id="size" class="form-select">
-                                    <option value="" selected disabled>Razmer saylan...</option>
-                                    @foreach ($sizes as $size)
-                                    <option value="{{ $size->id }}">{{ $size->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
 
                             {{-- Category --}}
                             <div class="mb-3">

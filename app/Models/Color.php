@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Size extends Model
+class Color extends Model
 {
     protected $guarded = [
         'id'
@@ -12,6 +12,7 @@ class Size extends Model
 
     protected $fillable = [
         'name',
+        'hex_code',
     ];
 
     public function variations()

@@ -44,13 +44,24 @@
                     <span class="fw-bold text-warning" style="font-size: 1.2rem;">{{ $product->price }} TMT</span>
                 </div>
                 <div class="mb-2">
-                    <span class="fw-semibold text-secondary">{{ __('app.size') }}:</span>
-                    <span class="fw-bold text-warning" style="font-size: 1.2rem;">{{ $product->size->name }}</span>
-                </div>
-
-                <div class="mb-3">
                     <span class="fw-semibold text-secondary">{{ __('app.description') }}:</span>
                     <p class="mb-0 mt-1">{{ $product->description }}</p>
+                </div>
+                <div class="mb-2 d-flex justify-content-between">
+                    <span class="fw-semibold text-secondary">{{ __('app.size') }}:</span>
+                    <div>
+                        @foreach ($product->variations as $variation)
+                        <span class="fw-bold text-warning px-2" style="font-size: 1.2rem;border: solid 1px;">{{ $variation->size->name }}</span>
+                        @endforeach
+                    </div>
+                </div>
+                <div class="mb-3 d-flex justify-content-between">
+                    <span class="fw-semibold text-secondary">{{ __('app.color') }}:</span>
+                    <div>
+                        @foreach ($product->variations as $variation)
+                        <span class="fw-bold text-warning px-3 ms-2" style="font-size: 1.2rem;background-color: {{ $variation->color->hex_code }};"></span>
+                        @endforeach
+                    </div>
                 </div>
                 <div class="d-flex gap-3 mt-auto">
                     <button class="btn btn-warning text-white fw-semibold flex-grow-1">

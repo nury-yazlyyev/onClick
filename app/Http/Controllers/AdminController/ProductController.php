@@ -26,7 +26,6 @@ class ProductController extends Controller
             'name' => ['required', 'max:255'],
             'price' => ['required', 'integer', 'min:1'],
             'category_id' => ['required', 'string'],
-            'size_id' => ['required', 'string'],
             'description' => ['nullable', 'max:255'],
             'image' => ['nullable','mimes:jpg,png,jpeg,JPEG','max:2048']
         ]);
@@ -39,7 +38,6 @@ class ProductController extends Controller
         Product::create([
             'vendor_id' =>$vendor->id,
             'category_id' => $request->category_id,
-            'size_id' => $request->size_id,
             'img_path' =>$imagePath ? $imagePath : null,
             'name' => $request->name,
             'price' => $request->price,

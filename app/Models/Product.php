@@ -57,9 +57,9 @@ class Product extends Model
         return $this->hasMany(Comment::class);
     }
 
-    public function size()
+    public function variations()
     {
-        return $this->belongsTo(Size::class);
+        return $this->hasMany(ProductVariation::class);
     }
 
     public function LikedBy(User $user)

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->string('img_path')->nullable();
             $table->string('name');
-            $table->float('price');
+            $table->decimal('price', 10, 2);
             $table->text('description')->nullable();
             $table->text('description_tm')->nullable();
             $table->text('description_ru')->nullable();
