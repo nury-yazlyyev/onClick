@@ -34,13 +34,6 @@
           <a class="nav-link px-2 small {{ app()->getLocale() == 'tm' ? 'fw-bold text-warning' : 'text-secondary' }}" href="{{ route('locale', 'tm') }}">TM</a>
         </div>
 
-        {{-- Toplam Fiyat --}}
-        <button class="btn btn-warning text-white fw-semibold d-flex align-items-center">
-          Jemi:
-          <span id="totalPrice" class="ms-1">0</span>
-          <span class="ms-1">TMT</span>
-        </button>
-
         {{-- Sepet --}}
         <button type="button" data-bs-toggle="modal" data-bs-target="#cartModal" class="btn btn-outline-warning fw-semibold position-relative">
           <i class="bi bi-basket me-1"></i> Sebet
@@ -70,11 +63,50 @@
       <div class="modal-body">
         <ol id="list" class="list-group list-group-numbered small">
           {{-- JS ile doldurulacak --}}
+          @if (auth()->check() && isset(auth()->user()->cart->items))
+          @foreach (auth()->user()->cart->items as $cartItem)
+          <li>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-flex">
+                <div>
+                  {{$cartItem->variation->product->name}} <span class="mx-1">-</span>
+                </div>
+                <div>
+                  {{$cartItem->variation->size->name}} <span class="mx-1">-</span>
+                </div>
+                <div>
+                  {{$cartItem->variation->color->name}} <span class="mx-1">-</span>
+                </div>
+                <div>
+                  {{$cartItem->variation->price}}
+                </div>
+              </div>
+              <div>
+                <div class="d-flex align-items-center">
+                  <div class="me-1">
+                    - {{$cartItem->quantity}} st
+                  </div>
+                  <button class="btn btn-link btn-sm"><i class="bi bi-trash"></i></button>
+                </div>
+              </div>
+            </div>
+          </li>
+          @endforeach
+          @else
+          <li>
+            Cart is Empty
+          </li>
+          @endif
         </ol>
+        <div class="text-white text-end fw-semibold d-flex align-items-center">
+          Jemi:
+          <span id="totalPrice" class="ms-1">0</span>
+          <span class="ms-1">TMT</span>
+        </div>
       </div>
       <div class="modal-footer d-flex justify-content-between">
         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Kapat</button>
-        <button type="button" onclick="Order()" class="btn btn-warning text-white fw-semibold">Sargyt Et</button>
+        <a href="{{ route('cart.index') }}"><button type="button" class="btn btn-warning text-white fw-semibold">Sargyt Et</button></a>
       </div>
     </div>
   </div>

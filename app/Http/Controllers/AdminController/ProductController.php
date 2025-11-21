@@ -24,7 +24,6 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => ['required', 'max:255'],
-            'price' => ['required', 'integer', 'min:1'],
             'category_id' => ['required', 'string'],
             'description' => ['nullable', 'max:255'],
             'image' => ['nullable','mimes:jpg,png,jpeg,JPEG','max:2048']
@@ -40,7 +39,6 @@ class ProductController extends Controller
             'category_id' => $request->category_id,
             'img_path' =>$imagePath ? $imagePath : null,
             'name' => $request->name,
-            'price' => $request->price,
             'description' => $request->description
         ]);
 

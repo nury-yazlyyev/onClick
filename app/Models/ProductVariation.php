@@ -36,6 +36,11 @@ class ProductVariation extends Model
         return $this->belongsTo(Color::class);
     }
 
+    public function cartItems()
+    {
+        return $this->hasMany(CartItem::class);
+    }
+
     public function getFinalPriceAttribute()
     {
         return $this->price ?? $this->product->price;

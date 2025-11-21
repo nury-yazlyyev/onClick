@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\AdminController\AdminController;
 use App\Http\Controllers\AdminController\ProductController;
+use App\Http\Controllers\ClientController\CartController;
 use App\Http\Controllers\ClientController\CommentController;
 use App\Http\Controllers\ClientController\FollowController;
 use App\Http\Controllers\ClientController\HomeController;
@@ -11,12 +11,11 @@ use App\Http\Controllers\ClientController\SigninController;
 use App\Http\Controllers\ClientController\VendorController;
 use App\Http\Middleware\IsClient;
 use App\Http\Middleware\IsVendor;
-use App\Models\Comment;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('/show/{id}', [HomeController::class, 'show'])->name('show');
-Route::get('/show/{id}/store', [VendorController::class, 'vendor_profile'])->name('vendor.profile');
+Route::get('/show/{id}/shop', [VendorController::class, 'vendor_profile'])->name('vendor.profile');
 Route::get('/shops', [HomeController::class, 'shops'])->name('shops');
 
 Route::get('locale/{locale}', [HomeController::class, 'locale'])->name('locale')->where('locale', '[a-z]+');
@@ -52,3 +51,7 @@ Route::middleware(['auth', IsVendor::class])
         Route::get('vendor/dashboard', [VendorController::class, 'dashboard'])->name('vendor.dashboard');
         Route::resource('vendor/products', ProductController::class);
     });
+Route::controller(CartController::class)->group(function(){
+    Route::get('cart', 'index')->name('cart.index');
+    Route::post('cart/add', 'addToCart')->name('cart.add');
+});

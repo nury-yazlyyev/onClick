@@ -21,7 +21,6 @@ class ProductFactory extends Factory
             'category_id' => $category->id,
             'img_path' => null,
             'name' => fake()->sentence(3),
-            'price' => fake()->numberBetween(50, 1000),
             'description' => fake()->sentence(),
             'description_tm' => fake()->sentence(),
             'description_ru' => fake()->sentence(),

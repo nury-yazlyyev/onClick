@@ -63,6 +63,11 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);
     }
 
+    public function cart()
+    {
+        return $this->hasOne(Cart::class);
+    }
+
     public function isFollow($vendorId)
     {
         return Follow::where('user_id', $this->id)

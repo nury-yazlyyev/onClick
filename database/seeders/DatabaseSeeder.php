@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
 
         User::factory(50)->create();
         Product::factory()
-            ->count(90)
+            ->count(10)
             ->create()
             ->each(function ($product) {
                 ProductVariation::factory()

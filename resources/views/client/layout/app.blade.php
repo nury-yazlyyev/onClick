@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/bootstrap-icons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/splide.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/size-color-btn.css') }}">
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('js/typed.js') }}"></script>
 </head>

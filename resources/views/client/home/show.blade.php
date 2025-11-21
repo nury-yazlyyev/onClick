@@ -11,7 +11,7 @@
         {{-- Ürün görseli --}}
         <div class="col-md-4 text-center">
             <div class="card border-0 shadow-sm">
-                <img src="{{ asset('storage/' . $product->img_path) }}" alt="{{ $product->name }}" class="img-fluid rounded-3">
+                <img src="{{  asset('storage/' . $product->img_path) }}" alt="{{ $product->name }}" class="img-fluid rounded-3">
             </div>
         </div>
 
@@ -47,31 +47,51 @@
                     <span class="fw-semibold text-secondary">{{ __('app.description') }}:</span>
                     <p class="mb-0 mt-1">{{ $product->description }}</p>
                 </div>
-                <div class="mb-2 d-flex justify-content-between">
-                    <span class="fw-semibold text-secondary">{{ __('app.size') }}:</span>
-                    <div>
-                        @foreach ($product->variations as $variation)
-                        <span class="fw-bold text-warning px-2" style="font-size: 1.2rem;border: solid 1px;">{{ $variation->size->name }}</span>
-                        @endforeach
-                    </div>
-                </div>
-                <div class="mb-3 d-flex justify-content-between">
-                    <span class="fw-semibold text-secondary">{{ __('app.color') }}:</span>
-                    <div>
-                        @foreach ($product->variations as $variation)
-                        <span class="fw-bold text-warning px-3 ms-2" style="font-size: 1.2rem;background-color: {{ $variation->color->hex_code }};"></span>
-                        @endforeach
-                    </div>
-                </div>
-                <div class="d-flex gap-3 mt-auto">
-                    <button class="btn btn-warning text-white fw-semibold flex-grow-1">
-                        <i class="bi bi-lightning-charge-fill me-1"></i> Quick Buy
-                    </button>
+                <div class="product-options">
 
-                    <button class="btn btn-outline-warning fw-semibold flex-grow-1" onclick="Orders2(this)">
-                        <i class="bi bi-basket me-1"></i> {{ __('app.add_to_cart') }}
-                    </button>
+                    {{-- BEDENLER --}}
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Beden Seç</h6>
+                        <div class="d-flex gap-2 flex-wrap">
+                            @foreach($product->variations->unique('size_id') as $variation)
+                            <button class="size-btn" data-size-id="{{ $variation->size->id }}">
+                                {{ $variation->size->name }}
+                            </button>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    {{-- RENKLER --}}
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Renk Seç</h6>
+                        <div class="d-flex gap-2">
+                            @foreach($product->variations->unique('color_id') as $variation)
+                            <div class="color-btn" data-color-id="{{ $variation->color->id }}" style="background-color: {{ $variation->color->hex_code }};">
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-3 mt-auto">
+                        <button class="btn btn-warning text-white fw-semibold flex-grow-1">
+                            <i class="bi bi-lightning-charge-fill me-1"></i> Quick Buy
+                        </button>
+                        <div>
+                            <form action="{{ route('cart.add') }}" method="POST" id="addToCartForm">
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                <input type="hidden" name="size_id" id="sizeInput">
+                                <input type="hidden" name="color_id" id="colorInput">
+
+                                <button type="submit" class="btn btn-outline-warning fw-semibold flex-grow-1" onclick="Orders2(this)" id="addToCartBtn" disabled>
+                                    <i class="bi bi-basket me-1"></i> {{ __('app.add_to_cart') }}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
                 </div>
+
                 <div>
                     <div class="mt-4">
 
@@ -271,5 +291,44 @@
             btn.textContent = 'Hide';
         }
     };
+
+    let selectedSize = null;
+    let selectedColor = null;
+
+    document.querySelectorAll('.size-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+
+            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+
+            selectedSize = this.dataset.sizeId;
+            checkSelection();
+        });
+    });
+
+    document.querySelectorAll('.color-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+
+            document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+
+            selectedColor = this.dataset.colorId;
+            checkSelection();
+        });
+    });
+
+    function checkSelection() {
+        if (selectedSize && selectedColor) {
+            document.getElementById('addToCartBtn').disabled = false;
+        }
+    }
+
+    function checkSelection() {
+        if (selectedSize && selectedColor) {
+            document.getElementById('addToCartBtn').disabled = false;
+            document.getElementById('sizeInput').value = selectedSize;
+            document.getElementById('colorInput').value = selectedColor;
+        }
+    }
 </script>
 @endsection
